@@ -1,10 +1,10 @@
-package me.kevinntech.onlineshopreboot;
+package me.kevinntech.onlineshop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OnlineShopRebootApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
