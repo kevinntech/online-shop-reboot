@@ -1,4 +1,4 @@
-package me.kevinntech.onlineshop;
+package me.kevinntech.onlineshop.base;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;

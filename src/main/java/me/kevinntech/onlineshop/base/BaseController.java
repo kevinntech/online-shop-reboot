@@ -1,4 +1,4 @@
-package me.kevinntech.onlineshop;
+package me.kevinntech.onlineshop.base;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
