@@ -52,7 +52,7 @@ public class AuthController {
 
         if (loginUser == null) {
             model.addAttribute("loginFail", "아이디 또는 패스워드가 맞지 않습니다.");
-            return "users/login";
+            return "auth/sign-in";
         }
 
         httpSession.setAttribute(LOGIN_USER, loginUser);

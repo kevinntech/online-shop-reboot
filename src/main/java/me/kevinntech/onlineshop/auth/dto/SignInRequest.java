@@ -1,5 +1,6 @@
 package me.kevinntech.onlineshop.auth.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -16,6 +17,12 @@ public class SignInRequest {
     @NotBlank
     @Length(min = 8, max = 50)
     private String password;
+
+    @Builder
+    public SignInRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public SignInDto toDto() {
         return SignInDto.builder()
