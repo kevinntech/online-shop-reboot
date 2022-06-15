@@ -1,8 +1,8 @@
 package me.kevinntech.onlineshop.base;
 
 import lombok.extern.slf4j.Slf4j;
-import me.kevinntech.onlineshop.auth.CurrentUser;
-import me.kevinntech.onlineshop.auth.LoginUser;
+import me.kevinntech.onlineshop.auth.annotation.CurrentUser;
+import me.kevinntech.onlineshop.auth.dto.LoginUser;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;

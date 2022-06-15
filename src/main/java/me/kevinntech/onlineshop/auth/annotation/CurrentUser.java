@@ -1,4 +1,4 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

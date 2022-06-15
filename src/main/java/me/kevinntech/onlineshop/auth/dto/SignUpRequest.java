@@ -1,7 +1,9 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.kevinntech.onlineshop.auth.annotation.UniqueEmail;
+import me.kevinntech.onlineshop.auth.annotation.UniqueNickname;
 import me.kevinntech.onlineshop.user.UserDto;
 import me.kevinntech.onlineshop.user.UserGrade;
 import org.hibernate.validator.constraints.Length;

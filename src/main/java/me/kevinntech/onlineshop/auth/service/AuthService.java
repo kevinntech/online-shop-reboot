@@ -1,6 +1,8 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.service;
 
 import lombok.RequiredArgsConstructor;
+import me.kevinntech.onlineshop.auth.dto.LoginUser;
+import me.kevinntech.onlineshop.auth.dto.SignInDto;
 import me.kevinntech.onlineshop.user.User;
 import me.kevinntech.onlineshop.user.UserDto;
 import me.kevinntech.onlineshop.user.UserRepository;

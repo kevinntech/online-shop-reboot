@@ -1,4 +1,4 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,7 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.validator;
 
 import lombok.RequiredArgsConstructor;
+import me.kevinntech.onlineshop.auth.annotation.UniqueEmail;
 import me.kevinntech.onlineshop.user.UserRepository;
 import org.springframework.stereotype.Component;
 

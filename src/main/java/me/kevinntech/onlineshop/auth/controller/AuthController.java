@@ -1,6 +1,10 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.kevinntech.onlineshop.auth.service.AuthService;
+import me.kevinntech.onlineshop.auth.dto.LoginUser;
+import me.kevinntech.onlineshop.auth.dto.SignInRequest;
+import me.kevinntech.onlineshop.auth.dto.SignUpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

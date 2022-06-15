@@ -1,4 +1,6 @@
-package me.kevinntech.onlineshop.auth;
+package me.kevinntech.onlineshop.auth.annotation;
+
+import me.kevinntech.onlineshop.auth.validator.UniqueEmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
