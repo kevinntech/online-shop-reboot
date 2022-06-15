@@ -54,4 +54,13 @@ public class AuthController {
         httpSession.setAttribute(LOGIN_USER, loginUser);
         return "redirect:/";
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        if (!httpSession.isNew()) {
+            httpSession.invalidate();
+        }
+
+        return "redirect:/";
+    }
 }
