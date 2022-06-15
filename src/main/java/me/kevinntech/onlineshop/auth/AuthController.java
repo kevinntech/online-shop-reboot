@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static me.kevinntech.onlineshop.auth.SessionConst.LOGIN_USER;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,5 +40,18 @@ public class AuthController {
     public String signInForm(Model model) {
         model.addAttribute("signInRequest", new SignInRequest());
         return "auth/sign-in";
+    }
+
+    @PostMapping("/sign-in")
+    public String signIn(@Valid @ModelAttribute SignInRequest signInRequest, Model model, HttpSession httpSession) {
+        LoginUser loginUser = authService.signIn(signInRequest.toDto());
+
+        if (loginUser == null) {
+            model.addAttribute("loginFail", "아이디 또는 패스워드가 맞지 않습니다.");
+            return "users/login";
+        }
+
+        httpSession.setAttribute(LOGIN_USER, loginUser);
+        return "redirect:/";
     }
 }

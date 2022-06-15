@@ -14,18 +14,19 @@ public class UserDto {
 
     private String password;
 
-    private UserGrade grade;
+    private UserGrade userGrade;
 
     private String bio;
 
     private String profileImage;
 
     @Builder
-    public UserDto(String email, String nickname, String password, UserGrade grade, String bio, String profileImage) {
+    public UserDto(Long id, String email, String nickname, String password, UserGrade userGrade, String bio, String profileImage) {
+        this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.grade = grade;
+        this.userGrade = userGrade;
         this.bio = bio;
         this.profileImage = profileImage;
     }
@@ -35,10 +36,21 @@ public class UserDto {
                 .nickname(nickname)
                 .email(email)
                 .password(password)
-                .userGrade(grade)
+                .userGrade(userGrade)
                 .bio(bio)
                 .profileImage(profileImage)
                 .build();
     }
 
+    public static UserDto fromEntity(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .userGrade(user.getUserGrade())
+                .bio(user.getBio())
+                .profileImage(user.getProfileImage())
+                .build();
+    }
 }

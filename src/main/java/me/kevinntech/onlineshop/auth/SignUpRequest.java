@@ -34,7 +34,7 @@ public class SignUpRequest {
                 .nickname(nickname)
                 .email(email)
                 .password(password)
-                .grade(UserGrade.USER)  // 기본 값은 USER로 설정한다.
+                .userGrade(UserGrade.USER)  // 기본 값은 USER로 설정한다.
                 .build();
     }
 }

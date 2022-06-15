@@ -32,4 +32,23 @@ public class AuthService {
         return true;
     }
 
+    public LoginUser signIn(SignInDto signInDto) {
+        UserDto userDto = userRepository.findByEmailOrNickname(signInDto.getUsername(), signInDto.getUsername())
+                .map(UserDto::fromEntity)
+                .orElse(null);
+
+        return validatePassword(signInDto, userDto);
+    }
+
+    private LoginUser validatePassword(SignInDto signInDto, UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+
+        if (passwordEncoder.matches(signInDto.getPassword(), userDto.getPassword())) {
+            return LoginUser.of(userDto);
+        } else {
+            return null;
+        }
+    }
 }

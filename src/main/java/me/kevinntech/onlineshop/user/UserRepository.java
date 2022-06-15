@@ -3,6 +3,8 @@ package me.kevinntech.onlineshop.user;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -10,4 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByNickname(String nickname);
 
+    Optional<User> findByEmailOrNickname(String email, String nickname);
 }

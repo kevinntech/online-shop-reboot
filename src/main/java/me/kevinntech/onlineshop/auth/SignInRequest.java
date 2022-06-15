@@ -17,4 +17,11 @@ public class SignInRequest {
     @Length(min = 8, max = 50)
     private String password;
 
+    public SignInDto toDto() {
+        return SignInDto.builder()
+                .username(username)
+                .password(password)
+                .build();
+    }
+
 }
