@@ -33,4 +33,9 @@ public class AuthController {
         return "redirect:/";
     }
 
+    @GetMapping("/sign-in")
+    public String signInForm(Model model) {
+        model.addAttribute("signInRequest", new SignInRequest());
+        return "auth/sign-in";
+    }
 }
