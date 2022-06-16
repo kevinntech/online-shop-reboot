@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 회원가입 스크립트 -->
+<script type="application/javascript" th:fragment="sign-up-script">
+    var is_duplication_nickname = false;
+    var is_duplication_email = false;
+
+    var main = {
+        init : function () {
+            var _this = this;
+
+            $('#btn-save').on('click', function () {
+                _this.save();
+            });
+
+            $('#btn-validation-nickname').on('click', function () {
+                _this.validateNickname();
+            });
+
+            $('#btn-validation-email').on('click', function () {
+                _this.validateEmail();
+            });
+        },
+        validateNickname : function () {
+            /* Ajax 요청 */
+            if(!$('#nickname').val()) {
+                $('#nickname').focus();
+                alert('별명을 입력하세요.');
+                return false;
+            }
+
+            var data = {
+                nickname: $('#nickname').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/auth/validate-nickname',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                is_duplication_nickname = true;
+                alert('사용할 수 있는 별명입니다.');
+            }).fail(function (error) {
+                is_duplication_nickname = false;
+                alert('이미 존재하는 별명입니다.');
+                $('#nickname').val('');
+            });
+        },
+        validateEmail : function () {
+            /* Ajax 요청 */
+            if(!$('#email').val()) {
+                $('#email').focus();
+                alert('이메일을 입력하세요.');
+                return false;
+            }
+
+            var data = {
+                email: $('#email').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/auth/validate-email',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                is_duplication_email = true;
+                alert('사용할 수 있는 이메일입니다.');
+            }).fail(function (error) {
+                is_duplication_email = false;
+                alert('이미 존재하는 이메일입니다.');
+                $('#email').val('');
+            });
+        }
+    };
+
+    main.init();
+</script>

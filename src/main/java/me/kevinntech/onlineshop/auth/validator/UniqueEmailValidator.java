@@ -26,7 +26,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
         if (existsByEmail) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(MessageFormat.format("Email {0} already exists!", email))
+            context.buildConstraintViolationWithTemplate(MessageFormat.format("{0} 이라는 이메일은 이미 존재합니다!", email))
                     .addConstraintViolation();
         }
 

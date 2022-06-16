@@ -8,6 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +23,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .collect(Collectors.toList());
         staticResourcesPath.add("/node_modules/**");
 
-        List<String> viewPath = Arrays.asList("/", "/sign-in", "/sign-up", "/logout");
+        List<String> viewPath = Arrays.asList("/", "/sign-in", "/sign-up", "/logout", "/error");
+        List<String> apiV1Path = Arrays.asList("/api/v1/auth/validate-nickname", "/api/v1/auth/validate-email");
 
         registry.addInterceptor(new SignInCheckInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns(viewPath)
+                .excludePathPatterns(apiV1Path)
                 .excludePathPatterns(staticResourcesPath);
     }
 

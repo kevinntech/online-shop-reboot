@@ -25,7 +25,7 @@ public class UniqueNicknameValidator implements ConstraintValidator<UniqueNickna
 
         if (existsByNickname) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(MessageFormat.format("Nickname {0} already exists!", nickname))
+            context.buildConstraintViolationWithTemplate(MessageFormat.format("{0} 이라는 닉네임은 이미 존재합니다!", nickname))
                     .addConstraintViolation();
         }
 

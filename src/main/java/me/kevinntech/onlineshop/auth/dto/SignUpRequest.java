@@ -22,11 +22,11 @@ public class SignUpRequest {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{3,20}$")
     private String nickname;
 
+    @UniqueEmail
     @Email
     @NotBlank
     private String email;
 
-    @UniqueEmail
     @NotBlank
     @Length(min = 8, max = 50)
     private String password;
