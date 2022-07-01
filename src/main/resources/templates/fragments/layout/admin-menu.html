@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 메뉴 -->
+<div th:fragment="admin-menu (currentMenu)" class="list-group">
+  <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'product-create'}? active" href="#" th:href="@{/products/create}">상품 등록</a>
+  <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'product-list'}? active" href="#" th:href="@{/products/list}">상품 목록</a>
+  <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'warehousing-create'}? active" href="#" th:href="@{/warehousing/create}">상품 공급</a>
+  <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'order-list'}? active" href="#" th:href="@{/orders/list}">주문 내역</a>
+</div>
