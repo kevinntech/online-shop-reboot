@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.kevinntech.onlineshop.product.Product;
+import me.kevinntech.onlineshop.product.annotation.UniqueProductCode;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CreateProductRequest {
 
+    @UniqueProductCode
     @NotBlank
     @Length(min = 1, max = 50)
     private String code;

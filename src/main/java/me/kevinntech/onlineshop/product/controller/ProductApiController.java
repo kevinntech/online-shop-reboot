@@ -22,4 +22,12 @@ public class ProductApiController {
         return ResponseEntity.ok().build();
     }
 
+    // TODO:상품코드 검증하는 로직 추가 필요
+    @GetMapping("/api/v1/products/validate-product-code")
+    public ResponseEntity validateProductCode(@RequestParam String productCode) {
+        productService.validateProductCode(productCode);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
