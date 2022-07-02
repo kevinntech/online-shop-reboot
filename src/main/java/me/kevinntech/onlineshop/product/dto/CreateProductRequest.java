@@ -35,13 +35,13 @@ public class CreateProductRequest {
     private String productImage;
 
     @Builder
-    public CreateProductRequest(Product product) {
-        this.code = product.getCode();
-        this.name = product.getName();
-        this.brand = product.getBrand();
-        this.price = product.getPrice();
-        this.description = product.getDescription();
-        this.productImage = product.getProductImage();
+    public CreateProductRequest(String code, String name, String brand, long price, String description, String productImage) {
+        this.code = code;
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.description = description;
+        this.productImage = productImage;
     }
 
     public ProductDto toDto() {

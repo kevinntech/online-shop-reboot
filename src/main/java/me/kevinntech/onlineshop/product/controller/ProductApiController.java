@@ -16,7 +16,7 @@ public class ProductApiController {
     private final ProductService productService;
 
     @PostMapping("/api/v1/products")
-    public OkResponse<Long> save(@Valid @RequestBody CreateProductRequest request) {
+    public OkResponse<Long> createProduct(@Valid @RequestBody CreateProductRequest request) {
         Long productId = productService.createProduct(request.toDto());
         return OkResponse.of(productId);
     }

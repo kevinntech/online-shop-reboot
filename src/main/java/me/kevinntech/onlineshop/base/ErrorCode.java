@@ -16,10 +16,7 @@ public enum ErrorCode {
 
     // User
     EMAIL_DUPLICATION(400, "U001", "Email is Duplication"),
-    LOGIN_INPUT_INVALID(400, "U002", "Login input is invalid"),
-
-    // Product
-    PRODUCT_CODE_DUPLICATION(400, "P001", "Product Code is Duplication");
+    LOGIN_INPUT_INVALID(400, "U002", "Login input is invalid");
 
     private final int status;
     private final String code;
