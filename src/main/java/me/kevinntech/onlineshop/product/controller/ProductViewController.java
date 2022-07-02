@@ -1,6 +1,7 @@
-package me.kevinntech.onlineshop.product;
+package me.kevinntech.onlineshop.product.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.kevinntech.onlineshop.product.dto.CreateProductForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

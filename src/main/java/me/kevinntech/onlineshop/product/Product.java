@@ -1,5 +1,6 @@
 package me.kevinntech.onlineshop.product;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,5 +48,15 @@ public class Product {
 
     @Lob @Basic(fetch = FetchType.EAGER)
     private String productImage;
+
+    @Builder
+    public Product(String code, String name, String brand, long price, String description, String productImage) {
+        this.code = code;
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.description = description;
+        this.productImage = productImage;
+    }
 
 }

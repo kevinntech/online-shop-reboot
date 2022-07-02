@@ -1,4 +1,4 @@
-package me.kevinntech.onlineshop.product;
+package me.kevinntech.onlineshop.product.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
