@@ -1,6 +1,7 @@
 package me.kevinntech.onlineshop.base;
 
 import lombok.extern.slf4j.Slf4j;
+import me.kevinntech.onlineshop.base.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

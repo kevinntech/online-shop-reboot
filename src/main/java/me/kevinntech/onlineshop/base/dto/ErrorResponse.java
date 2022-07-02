@@ -1,8 +1,9 @@
-package me.kevinntech.onlineshop.base;
+package me.kevinntech.onlineshop.base.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.kevinntech.onlineshop.base.ErrorCode;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
-    private int status;
-
     private String code; // 에러에 대한 고유 식별자
 
     private String message; // 에러에 대해 사람이 읽을 수 있는 간단한 메세지
@@ -25,7 +24,6 @@ public class ErrorResponse {
     private LocalDateTime timestamp;
 
     private ErrorResponse(ErrorCode code) {
-        this.status = code.getStatus();
         this.code = code.getCode();
         this.message = code.getMessage();
         this.errors = new ArrayList<>();
@@ -33,7 +31,6 @@ public class ErrorResponse {
     }
 
     private ErrorResponse(ErrorCode code, List<FieldError> errors) {
-        this.status = code.getStatus();
         this.code = code.getCode();
         this.message = code.getMessage();
         this.errors = errors;
