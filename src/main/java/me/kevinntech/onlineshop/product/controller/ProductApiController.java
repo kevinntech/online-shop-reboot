@@ -3,11 +3,14 @@ package me.kevinntech.onlineshop.product.controller;
 import lombok.RequiredArgsConstructor;
 import me.kevinntech.onlineshop.base.dto.OkResponse;
 import me.kevinntech.onlineshop.product.dto.CreateProductRequest;
+import me.kevinntech.onlineshop.product.dto.GetProductResponse;
 import me.kevinntech.onlineshop.product.dto.ValidateProductCodeRequest;
 import me.kevinntech.onlineshop.product.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +27,16 @@ public class ProductApiController {
     @PostMapping("/api/v1/products/validate-product-code")
     public OkResponse<String> validateProductCode(@Valid @RequestBody ValidateProductCodeRequest request) {
         return OkResponse.of("ok");
+    }
+
+    @GetMapping("/api/v1/products")
+    public OkResponse<List<GetProductResponse>> getProducts() {
+        List<GetProductResponse> products = productService.getProductsOrderById()
+                .stream()
+                .map(GetProductResponse::fromDto)
+                .collect(Collectors.toList());
+
+        return OkResponse.of(products);
     }
 
 }
