@@ -1,6 +1,8 @@
 package me.kevinntech.onlineshop.product.service;
 
 import lombok.RequiredArgsConstructor;
+import me.kevinntech.onlineshop.base.BusinessException;
+import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.ProductDto;
 import me.kevinntech.onlineshop.product.repository.ProductRepository;
@@ -18,6 +20,10 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Long createProduct(ProductDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
         Product savedProduct = productRepository.save(dto.toEntity());
         return savedProduct.getId();
     }
