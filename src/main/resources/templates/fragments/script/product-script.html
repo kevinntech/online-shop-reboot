@@ -151,14 +151,8 @@
                 is_duplication_check = true;
                 alert('사용할 수 있는 상품코드입니다.');
             }).fail(function(xhr, status, error) {
-                /*** TODO: 에러 메시지를 표시하는 부분 개선하기 (START) ***/
-                //var responseJSON = JSON.parse(xhr.responseText);
-                /* responseJSON는 아래와 같은 JSON를 갖는다. (스프링 부트의 기본 에러 핸들러가 응답하는 JSON를 기준으로 설명한다.)
-                   {timestamp: '2022-07-01T09:39:54.803+00:00', status: 500, error: 'Internal Server Error', path: '/api/v1/products/validate'} */
-                //alert(responseJSON.timestamp);
-                /*** TODO: 에러 메시지를 표시하는 부분 개선하기 (END) ***/
-
-                alert('에러가 발생했습니다.');
+                var responseJSON = JSON.parse(xhr.responseText);
+                alert(responseJSON.errors[0].reason);
             });
         }
     };
