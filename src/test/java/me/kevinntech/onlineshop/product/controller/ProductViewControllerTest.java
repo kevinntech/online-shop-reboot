@@ -46,4 +46,19 @@ class ProductViewControllerTest {
                 .andExpect(model().attributeExists("createProductForm"));
     }
 
+    @DisplayName("[View][GET] 상품 목록 페이지")
+    @Test
+    void getProducts() throws Exception {
+        // Given
+
+        // When & Then
+        mockMvc.perform(get("/products/list")
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("products/list"))
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attributeExists("products"));
+    }
+
 }
