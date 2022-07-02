@@ -45,4 +45,15 @@ public class ProductDto {
                 .build();
     }
 
+    public static ProductDto fromEntity(Product product) {
+        return ProductDto.builder()
+                .id(product.getId())
+                .code(product.getCode())
+                .name(product.getName())
+                .brand(product.getBrand())
+                .price(product.getPrice())
+                .description(product.getDescription())
+                .productImage(product.getProductImage())
+                .build();
+    }
 }

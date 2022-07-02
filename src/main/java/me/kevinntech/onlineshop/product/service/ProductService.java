@@ -7,6 +7,9 @@ import me.kevinntech.onlineshop.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -17,6 +20,13 @@ public class ProductService {
     public Long createProduct(ProductDto dto) {
         Product savedProduct = productRepository.save(dto.toEntity());
         return savedProduct.getId();
+    }
+
+    public List<ProductDto> getProductsOrderById() {
+        return productRepository.findProductsOrderById()
+                .stream()
+                .map(ProductDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
 }
