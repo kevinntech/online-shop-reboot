@@ -19,15 +19,4 @@ public class ProductService {
         return savedProduct.getId();
     }
 
-    @Transactional(readOnly = true)
-    public boolean validateProductCode(String productCode) {
-        boolean existsByProductCode = productRepository.existsByCode(productCode);
-
-        if (existsByProductCode) {
-            throw new IllegalArgumentException("잘못된 상품 코드입니다.");
-        }
-
-        return true;
-    }
-
 }
