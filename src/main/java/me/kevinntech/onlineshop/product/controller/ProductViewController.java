@@ -28,7 +28,7 @@ public class ProductViewController {
     }
 
     @GetMapping("/list")
-    public String getProducts(Model model) {
+    public String showsProductList(Model model) {
         List<GetProductResponse> products = productService.getProductsOrderById()
                 .stream()
                 .map(GetProductResponse::fromDto)

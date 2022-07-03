@@ -48,7 +48,7 @@ class ProductViewControllerTest {
 
     @DisplayName("[View][GET] 상품 목록 페이지")
     @Test
-    void getProducts() throws Exception {
+    void showsProductList() throws Exception {
         // Given
 
         // When & Then
