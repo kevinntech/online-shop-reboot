@@ -6,6 +6,7 @@ import me.kevinntech.onlineshop.auth.dto.LoginUser;
 import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.CreateProductRequest;
+import me.kevinntech.onlineshop.product.dto.UpdateProductRequest;
 import me.kevinntech.onlineshop.product.dto.ValidateProductCodeRequest;
 import me.kevinntech.onlineshop.product.repository.ProductRepository;
 import me.kevinntech.onlineshop.user.UserGrade;
@@ -25,8 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -239,5 +239,130 @@ class ProductApiControllerTest {
         assertThat(findProduct.getBrand()).isEqualTo("브랜드");
         assertThat(findProduct.getPrice()).isEqualTo(10000);
         assertThat(findProduct.getDescription()).isEqualTo("설명입니다.");
+    }
+
+    @Test
+    @DisplayName("[API][PUT] 상품 수정 - 성공")
+    public void updateProduct_success() throws Exception {
+        // Given
+        Product originalProduct = Product.builder()
+                .code("NO-1")
+                .name("운동화")
+                .brand("브랜드")
+                .price(10000)
+                .description("설명입니다.")
+                .build();
+        productRepository.save(originalProduct);
+        Long productId = originalProduct.getId();
+
+        UpdateProductRequest request = UpdateProductRequest.builder()
+                .code("NO-1")
+                .name("에어포스 1")
+                .brand("나이키")
+                .price(100000)
+                .build();
+
+        String jsonString = objectMapper.writeValueAsString(request);
+
+        // When & Then
+        mockMvc.perform(put("/api/v1/products/" + productId)
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .content(jsonString))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andExpect(jsonPath("$.data").value(productId));
+
+        Product changedProduct = productRepository.findById(productId).orElse(null);
+
+        assertThat(changedProduct).isEqualTo(originalProduct);
+        assertThat(changedProduct.getCode()).isEqualTo(request.getCode());
+        assertThat(changedProduct.getName()).isEqualTo(request.getName());
+        assertThat(changedProduct.getBrand()).isEqualTo(request.getBrand());
+        assertThat(changedProduct.getPrice()).isEqualTo(request.getPrice());
+    }
+
+    @Test
+    @DisplayName("[API][PUT] 상품 실패 - 실패 (필수 입력 정보에 대해서 입력하지 않음)")
+    public void updateProduct_fail1() throws Exception {
+        // Given
+        Product originalProduct = Product.builder()
+                .code("NO-1")
+                .name("운동화")
+                .brand("브랜드")
+                .price(10000)
+                .description("설명입니다.")
+                .build();
+        productRepository.save(originalProduct);
+        Long productId = originalProduct.getId();
+
+        UpdateProductRequest request = UpdateProductRequest.builder()
+                .code("") // 값 누락
+                .name("에어포스 1")
+                .brand("나이키")
+                .price(100000)
+                .build();
+
+        String jsonString = objectMapper.writeValueAsString(request);
+
+        // When & Then
+        mockMvc.perform(put("/api/v1/products/" + productId)
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .content(jsonString))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_INPUT_VALUE.getCode()))
+                .andExpect(jsonPath("$.message").value(containsString(ErrorCode.INVALID_INPUT_VALUE.getMessage())))
+                .andExpect(jsonPath("$.errors").isArray());
+    }
+
+    @Test
+    @DisplayName("[API][PUT] 상품 수정 - 실패 (이미 존재하는 상품 코드로 변경을 시도함)")
+    public void updateProduct_fail2() throws Exception {
+        // Given
+        Product originalProduct1 = Product.builder()
+                .code("NO-1")
+                .name("운동화")
+                .brand("브랜드1")
+                .price(10000)
+                .description("운동화에 대한 설명입니다.")
+                .build();
+        Product originalProduct2 = Product.builder()
+                .code("NO-2")
+                .name("티셔츠")
+                .brand("브랜드2")
+                .price(20000)
+                .description("티셔츠에 대한 설명입니다.")
+                .build();
+        productRepository.save(originalProduct1);
+        productRepository.save(originalProduct2);
+        Long productId = originalProduct2.getId();
+
+        UpdateProductRequest request = UpdateProductRequest.builder()
+                .code("NO-1")
+                .name("에어포스 1")
+                .brand("나이키")
+                .price(100000)
+                .build();
+
+        String jsonString = objectMapper.writeValueAsString(request);
+
+        // When & Then
+        mockMvc.perform(put("/api/v1/products/" + productId)
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .content(jsonString))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ErrorCode.PRODUCT_CODE_DUPLICATION.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.PRODUCT_CODE_DUPLICATION.getMessage()))
+                .andExpect(jsonPath("$.errors").isArray());
     }
 }

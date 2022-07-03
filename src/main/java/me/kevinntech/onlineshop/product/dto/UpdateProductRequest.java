@@ -13,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class UpdateProductRequest {
 
-    @UniqueProductCode
     @NotBlank
     @Length(min = 1, max = 50)
     private String code;
