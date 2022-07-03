@@ -1,8 +1,6 @@
 package me.kevinntech.onlineshop.product.service;
 
 import lombok.RequiredArgsConstructor;
-import me.kevinntech.onlineshop.base.BusinessException;
-import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.ProductDto;
 import me.kevinntech.onlineshop.product.repository.ProductRepository;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -35,4 +34,12 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<ProductDto> findProductById(Long productId) {
+        if (productId == null) {
+            return Optional.empty();
+        }
+
+        return productRepository.findById(productId)
+                .map(ProductDto::fromEntity);
+    }
 }
