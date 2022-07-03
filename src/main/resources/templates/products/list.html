@@ -5,6 +5,15 @@
 <body class="bg-light">
   <div th:replace="fragments/layout/navigation :: main-nav"></div>
   <div class="container">
+    <div class="row mt-3 justify-content-center">
+      <div th:if="${error}" class="col-10 alert alert-danger alert-dismissible fade show" role="alert">
+        <strong th:text="${error}">에러 메시지</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+
     <div class="row mt-5 justify-content-center">
       <div class="col-2">
         <div th:replace="fragments/layout/admin-menu :: admin-menu(currentMenu='product-list')"></div>

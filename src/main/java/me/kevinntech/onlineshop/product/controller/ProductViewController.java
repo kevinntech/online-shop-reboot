@@ -44,7 +44,7 @@ public class ProductViewController {
                 .orElse(null);
 
         if (productDto == null) {
-            model.addAttribute("error", "wrong.productId");
+            model.addAttribute("error", "존재하지 않는 상품입니다.");
             return "products/list";
         }
 
