@@ -81,4 +81,12 @@ public class ProductService {
         }
     }
 
+    public Long deleteProduct(Long productId) {
+        if (productId == null) {
+            return null;
+        }
+
+        productRepository.deleteById(productId);
+        return productId;
+    }
 }

@@ -47,4 +47,10 @@ public class ProductApiController {
         return OkResponse.of(updatedProductId);
     }
 
+    @DeleteMapping("/api/v1/products/{productId}")
+    public OkResponse<Long> deleteProduct(@PathVariable Long productId) {
+        Long deletedProductId = productService.deleteProduct(productId);
+        return OkResponse.of(deletedProductId);
+    }
+
 }
