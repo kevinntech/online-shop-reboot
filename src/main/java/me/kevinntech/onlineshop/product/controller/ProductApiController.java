@@ -7,12 +7,15 @@ import me.kevinntech.onlineshop.product.dto.GetProductResponse;
 import me.kevinntech.onlineshop.product.dto.UpdateProductRequest;
 import me.kevinntech.onlineshop.product.dto.ValidateProductCodeRequest;
 import me.kevinntech.onlineshop.product.service.ProductService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Validated
 @RequiredArgsConstructor
 @RestController
 public class ProductApiController {
@@ -48,7 +51,7 @@ public class ProductApiController {
     }
 
     @DeleteMapping("/api/v1/products/{productId}")
-    public OkResponse<Long> deleteProduct(@PathVariable Long productId) {
+    public OkResponse<Long> deleteProduct(@Positive @PathVariable Long productId) {
         Long deletedProductId = productService.deleteProduct(productId);
         return OkResponse.of(deletedProductId);
     }

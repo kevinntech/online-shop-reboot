@@ -5,12 +5,9 @@ import me.kevinntech.onlineshop.base.BusinessException;
 import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.ProductDto;
-import me.kevinntech.onlineshop.product.dto.UpdateProductRequest;
 import me.kevinntech.onlineshop.product.repository.ProductRepository;
-import me.kevinntech.onlineshop.product.validator.UniqueProductCodeValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +19,6 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final UniqueProductCodeValidator uniqueProductCodeValidator;
 
     public Long createProduct(ProductDto dto) {
         if (dto == null) {
@@ -82,6 +78,14 @@ public class ProductService {
     }
 
     public Long deleteProduct(Long productId) {
+        try {
+            return deleteProductById(productId);
+        } catch (Exception ex) {
+            throw new BusinessException(ErrorCode.DATA_ACCESS_ERROR, ex);
+        }
+    }
+
+    private Long deleteProductById(Long productId) {
         if (productId == null) {
             return null;
         }

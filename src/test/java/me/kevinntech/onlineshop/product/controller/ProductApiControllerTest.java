@@ -365,4 +365,46 @@ class ProductApiControllerTest {
                 .andExpect(jsonPath("$.message").value(ErrorCode.PRODUCT_CODE_DUPLICATION.getMessage()))
                 .andExpect(jsonPath("$.errors").isArray());
     }
+
+    @Test
+    @DisplayName("[API][DELETE] 상품 삭제 - 성공")
+    public void deleteProduct_success() throws Exception {
+        // Given
+        Product product = Product.builder()
+                .code("NO-1")
+                .name("운동화")
+                .brand("브랜드")
+                .price(10000)
+                .description("설명입니다.")
+                .build();
+        productRepository.save(product);
+        Long productId = product.getId();
+
+        // When & Then
+        mockMvc.perform(delete("/api/v1/products/" + productId)
+                        .session(session)
+                        .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andExpect(jsonPath("$.data").value(productId));
+    }
+
+    @Test
+    @DisplayName("[API][DELETE] 상품 삭제 - 실패 (잘못된 입력 값)")
+    public void deleteProduct_fail() throws Exception {
+        // Given
+        Long productId = 0L;
+
+        // When & Then
+        mockMvc.perform(delete("/api/v1/products/" + productId)
+                        .session(session)
+                        .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_INPUT_VALUE.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.INVALID_INPUT_VALUE.getMessage()))
+                .andExpect(jsonPath("$.errors").isArray());
+    }
 }
