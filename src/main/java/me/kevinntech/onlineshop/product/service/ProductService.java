@@ -49,29 +49,29 @@ public class ProductService {
                 .map(ProductDto::fromEntity);
     }
 
-    public Long updateProduct(Long productId, UpdateProductRequest request) {
-        if (productId == null || request == null) {
+    public Long updateProduct(Long productId, ProductDto dto) {
+        if (productId == null || dto == null) {
             return null;
         }
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
-        updateProductOrThrow(request, product);
+        updateProductOrThrow(dto, product);
         return product.getId();
     }
 
-    private void updateProductOrThrow(UpdateProductRequest request, Product product) {
-        if (isChangeableProductCode(request, product)) {
-            product.update(request.toDto());
+    private void updateProductOrThrow(ProductDto dto, Product product) {
+        if (isChangeableProductCode(dto, product)) {
+            product.update(dto);
         } else {
             throw new BusinessException(ErrorCode.PRODUCT_CODE_DUPLICATION);
         }
     }
 
-    private boolean isChangeableProductCode(UpdateProductRequest request, Product product) {
-        if (productRepository.existsByCode(request.getCode())) {
-            if (product.getCode().equals(request.getCode())) {
+    private boolean isChangeableProductCode(ProductDto dto, Product product) {
+        if (productRepository.existsByCode(dto.getCode())) {
+            if (product.getCode().equals(dto.getCode())) {
                 return true;
             } else {
                 return false;

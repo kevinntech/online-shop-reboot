@@ -1,5 +1,7 @@
 package me.kevinntech.onlineshop.product.service;
 
+import me.kevinntech.onlineshop.base.BusinessException;
+import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.ProductDto;
 import me.kevinntech.onlineshop.product.repository.ProductRepository;
@@ -13,8 +15,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -92,6 +96,76 @@ class ProductServiceTest {
         // Then
         assertThat(productDtoList.size()).isEqualTo(0);
         then(productRepository).should().findProductsOrderById();
+    }
+
+    @DisplayName("[Service] 상품 수정 - 성공")
+    @Test
+    void updateProduct_success() {
+        // Given
+        Long productId = 1L;
+        Product originalProduct = buildProduct("CODE-001", "운동화", "나이키", 30000L);
+        Product changedProduct = buildProduct("CODE-001", "에어포스 1", "나이키", 35000L);
+        ProductDto changedProductDto = ProductDto.fromEntity(changedProduct);
+
+        given(productRepository.findById(productId)).willReturn(Optional.of(originalProduct));
+
+        // When
+        Long changedProductId = productService.updateProduct(productId, changedProductDto);
+
+        // Then
+        assertThat(changedProductId).isEqualTo(1L);
+        assertThat(originalProduct.getCode()).isEqualTo(changedProduct.getCode());
+        assertThat(originalProduct.getName()).isEqualTo(changedProduct.getName());
+        assertThat(originalProduct.getBrand()).isEqualTo(changedProduct.getBrand());
+        assertThat(originalProduct.getPrice()).isEqualTo(changedProduct.getPrice());
+        then(productRepository).should().findById(productId);
+    }
+
+    @DisplayName("[Service] 상품 수정 - 실패 (상품 ID를 전달하지 않으면 수정을 중단하고 결과를 null로 리턴)")
+    @Test
+    void updateProduct_fail1() {
+        // Given
+        Long productId = null;
+        Product product = buildProduct("CODE-001", "운동화", "나이키", 30000L);
+
+        // When
+        Long changedProductId = productService.updateProduct(productId, ProductDto.fromEntity(product));
+
+        // Then
+        assertThat(changedProductId).isEqualTo(null);
+        then(productRepository).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("[Service] 상품 수정 - 실패 (상품 ID만 전달하고 수정할 정보를 전달하지 않으면 수정을 중단하고 결과를 null로 리턴)")
+    @Test
+    void updateProduct_fail2() {
+        // Given
+        Long productId = 1L;
+
+        // When
+        Long changedProductId = productService.updateProduct(productId, null);
+
+        // Then
+        assertThat(changedProductId).isEqualTo(null);
+        then(productRepository).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("[Service] 상품 수정 - 실패 (전달한 상품 ID에 해당하는 상품이 존재하지 않는다면 예외를 발생시킴)")
+    @Test
+    void updateProduct_fail3() {
+        // Given
+        Long productId = 2L;
+        Product originalProduct = buildProduct("CODE-001", "운동화", "나이키", 30000L);
+        given(productRepository.findById(productId)).willReturn(Optional.empty());
+
+        // When
+        Throwable thrown = catchThrowable(() -> productService.updateProduct(productId, ProductDto.fromEntity(originalProduct)));
+
+        // Then
+        assertThat(thrown)
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining(ErrorCode.ENTITY_NOT_FOUND.getMessage());
+        then(productRepository).should().findById(productId);
     }
 
     private Product buildProduct(String code, String name, String brand, Long price) {

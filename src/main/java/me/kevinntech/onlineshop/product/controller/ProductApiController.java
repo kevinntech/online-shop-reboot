@@ -43,7 +43,7 @@ public class ProductApiController {
     @PutMapping("/api/v1/products/{productId}")
     public OkResponse<Long> updateProduct(@PathVariable Long productId,
                                           @Valid @RequestBody UpdateProductRequest request) {
-        Long updatedProductId = productService.updateProduct(productId, request);
+        Long updatedProductId = productService.updateProduct(productId, request.toDto());
         return OkResponse.of(updatedProductId);
     }
 
