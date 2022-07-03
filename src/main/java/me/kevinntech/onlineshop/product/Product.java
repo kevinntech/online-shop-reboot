@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.kevinntech.onlineshop.product.dto.ProductDto;
 
 import javax.persistence.*;
 
@@ -59,4 +60,12 @@ public class Product {
         this.productImage = productImage;
     }
 
+    public void update(ProductDto productDto) {
+        if (productDto.getCode() != null) { this.code = productDto.getCode(); }
+        if (productDto.getName() != null) { this.name = productDto.getName(); }
+        if (productDto.getBrand() != null) { this.brand = productDto.getBrand(); }
+        if (productDto.getPrice() >= 0) { this.price = productDto.getPrice(); }
+        if (productDto.getDescription() != null) { this.description = productDto.getDescription(); }
+        if (productDto.getProductImage() != null) { this.productImage = productDto.getProductImage(); }
+    }
 }

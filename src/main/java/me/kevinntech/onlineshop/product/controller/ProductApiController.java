@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.kevinntech.onlineshop.base.dto.OkResponse;
 import me.kevinntech.onlineshop.product.dto.CreateProductRequest;
 import me.kevinntech.onlineshop.product.dto.GetProductResponse;
+import me.kevinntech.onlineshop.product.dto.UpdateProductRequest;
 import me.kevinntech.onlineshop.product.dto.ValidateProductCodeRequest;
 import me.kevinntech.onlineshop.product.service.ProductService;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,13 @@ public class ProductApiController {
                 .collect(Collectors.toList());
 
         return OkResponse.of(products);
+    }
+
+    @PutMapping("/api/v1/products/{productId}")
+    public OkResponse<Long> updateProduct(@PathVariable Long productId,
+                                          @Valid @RequestBody UpdateProductRequest request) {
+        Long updatedProductId = productService.updateProduct(productId, request);
+        return OkResponse.of(updatedProductId);
     }
 
 }
