@@ -1,4 +1,4 @@
-package me.kevinntech.onlineshop.domain.warehousing;
+package me.kevinntech.onlineshop.domain.warehousing.controller;
 
 import me.kevinntech.onlineshop.LoginSessionFactory;
 import me.kevinntech.onlineshop.domain.auth.dto.LoginUser;
