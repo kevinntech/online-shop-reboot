@@ -1,6 +1,6 @@
 package me.kevinntech.onlineshop.product.service;
 
-import me.kevinntech.onlineshop.base.BusinessException;
+import me.kevinntech.onlineshop.base.GeneralException;
 import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.ProductDto;
@@ -162,7 +162,7 @@ class ProductServiceTest {
 
         // Then
         assertThat(thrown)
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(GeneralException.class)
                 .hasMessageContaining(ErrorCode.ENTITY_NOT_FOUND.getMessage());
         then(productRepository).should().findById(productId);
     }
@@ -208,7 +208,7 @@ class ProductServiceTest {
 
         // Then
         assertThat(thrown)
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(GeneralException.class)
                 .hasMessageContaining(ErrorCode.DATA_ACCESS_ERROR.getMessage());
         then(productRepository).should().deleteById(productId);
     }

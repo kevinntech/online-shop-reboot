@@ -1,7 +1,7 @@
 package me.kevinntech.onlineshop.product.service;
 
 import lombok.RequiredArgsConstructor;
-import me.kevinntech.onlineshop.base.BusinessException;
+import me.kevinntech.onlineshop.base.GeneralException;
 import me.kevinntech.onlineshop.base.ErrorCode;
 import me.kevinntech.onlineshop.product.Product;
 import me.kevinntech.onlineshop.product.dto.ProductDto;
@@ -51,7 +51,7 @@ public class ProductService {
         }
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.ENTITY_NOT_FOUND));
 
         updateProductOrThrow(dto, product);
         return product.getId();
@@ -61,7 +61,7 @@ public class ProductService {
         if (isChangeableProductCode(dto, product)) {
             product.update(dto);
         } else {
-            throw new BusinessException(ErrorCode.PRODUCT_CODE_DUPLICATION);
+            throw new GeneralException(ErrorCode.PRODUCT_CODE_DUPLICATION);
         }
     }
 
@@ -81,7 +81,7 @@ public class ProductService {
         try {
             return deleteProductById(productId);
         } catch (Exception ex) {
-            throw new BusinessException(ErrorCode.DATA_ACCESS_ERROR, ex);
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, ex);
         }
     }
 

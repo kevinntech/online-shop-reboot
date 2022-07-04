@@ -44,9 +44,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex) {
-        log.error("BusinessException", ex);
+    @ExceptionHandler(GeneralException.class)
+    protected ResponseEntity<ErrorResponse> handleGeneralException(GeneralException ex) {
+        log.error("GeneralException", ex);
         final ErrorResponse response = ErrorResponse.of(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
