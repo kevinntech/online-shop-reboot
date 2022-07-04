@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Slf4j
 @ControllerAdvice
-public class BaseControllerAdvice {
+public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void currentUser(@CurrentUser LoginUser loginUser, Model model) {
