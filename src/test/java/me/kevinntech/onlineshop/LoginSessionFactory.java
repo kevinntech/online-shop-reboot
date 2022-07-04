@@ -1,11 +1,10 @@
 package me.kevinntech.onlineshop;
 
-import me.kevinntech.onlineshop.auth.dto.LoginUser;
-import me.kevinntech.onlineshop.auth.dto.SignInRequest;
-import me.kevinntech.onlineshop.auth.service.AuthService;
-import me.kevinntech.onlineshop.user.UserDto;
-import me.kevinntech.onlineshop.user.UserGrade;
-import me.kevinntech.onlineshop.user.UserRepository;
+import me.kevinntech.onlineshop.domain.auth.dto.LoginUser;
+import me.kevinntech.onlineshop.domain.auth.dto.SignInRequest;
+import me.kevinntech.onlineshop.domain.auth.service.AuthService;
+import me.kevinntech.onlineshop.domain.user.UserDto;
+import me.kevinntech.onlineshop.domain.user.UserGrade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Component;
@@ -13,15 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginSessionFactory {
     @Autowired AuthService authService;
-    @Autowired UserRepository userRepository;
 
     /*
      * 로그인 정보가 저장된 세션을 반환한다.
      * */
     public MockHttpSession createUserLoginSession(LoginUser loginUser) {
-        // 기존 회원 삭제
-        userRepository.deleteAll();
-
         // 회원 가입
         UserDto userDto = LoginSessionFactory.createUserDto(loginUser.getEmail(), loginUser.getNickname(), loginUser.getGrade());
         authService.signUp(userDto);
