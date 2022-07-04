@@ -1,10 +1,10 @@
 package me.kevinntech.onlineshop;
 
-import me.kevinntech.onlineshop.auth.dto.LoginUser;
-import me.kevinntech.onlineshop.auth.dto.SignInRequest;
-import me.kevinntech.onlineshop.auth.service.AuthService;
-import me.kevinntech.onlineshop.user.UserDto;
-import me.kevinntech.onlineshop.user.UserGrade;
+import me.kevinntech.onlineshop.domain.auth.dto.LoginUser;
+import me.kevinntech.onlineshop.domain.auth.dto.SignInRequest;
+import me.kevinntech.onlineshop.domain.auth.service.AuthService;
+import me.kevinntech.onlineshop.domain.user.UserDto;
+import me.kevinntech.onlineshop.domain.user.UserGrade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Component;

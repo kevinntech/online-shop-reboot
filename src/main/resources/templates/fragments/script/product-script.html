@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 상품 스크립트 -->
+<script type="application/javascript" th:fragment="product-script">
+
+    // 저장하기 전, 입력하지 않은 필수 값에 대해 입력 요구하기
+    var form_validation = {
+        validate : function () {
+            var is_empty = false;
+
+            $('#product-new-form').find('.require-validation').each(function(){
+                if(!$(this).val()) {
+                    $(this).focus();
+                    is_empty = true;
+                    return false;
+                }
+            });
+
+            if(is_empty) {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    var is_duplication_check = false;
+
+    var main = {
+        init : function () {
+            var _this = this;
+
+            $('#btn-save').on('click', function () {
+                _this.save();
+            });
+
+            $('#btn-update').on('click', function () {
+                _this.update();
+            });
+
+            $('.btn-delete').on('click', function () {
+                /* 삭제 버튼을 의미 */
+                var button = $(this);
+
+                _this.delete(button);
+            });
+
+            $('#btn-validation').on('click', function () {
+                _this.validate();
+            });
+
+        },
+        save : function () {
+            var validation_result = form_validation.validate();
+
+            if(!validation_result){
+                alert('입력하지 않은 값이 있습니다.');
+                return false;
+            }
+
+            if(!is_duplication_check){
+                alert('상품코드에 대한 중복 확인을 진행 하세요.');
+                return false;
+            }
+
+            /* Ajax 요청 */
+            var data = {
+                code: $('#code').val(),
+                name: $('#name').val(),
+                brand: $('#brand').val(),
+                price: $('#price').val(),
+                description: $('#description').val(),
+                productImage: $('#productImage').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/products',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('상품 등록을 완료하였습니다.');
+                window.location.href = '/products/create';
+            }).fail(function(xhr, status, error) {
+                alert('상품 등록에 실패했습니다.');
+                window.location.href = '/products/create';
+            });
+        },
+        update : function () {
+            var validation_result = form_validation.validate();
+
+            if(!validation_result){
+                alert('입력하지 않은 값이 있습니다.');
+                return false;
+            }
+
+            var id = $('#id').val();
+
+            /* Ajax 요청 */
+            var data = {
+                code: $('#code').val(),
+                name: $('#name').val(),
+                brand: $('#brand').val(),
+                price: $('#price').val(),
+                description: $('#description').val(),
+                productImage: $('#productImage').val()
+            };
+
+            $.ajax({
+                type: 'PUT',
+                url: '/api/v1/products/' + id,
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('상품 수정을 완료하였습니다.');
+                window.location.href = '/products/list';
+            }).fail(function(xhr, status, error) {
+                alert('상품 수정에 실패했습니다.');
+            });
+        },
+        delete : function (button) {
+            var tr = button.parent().parent();  // 삭제 버튼의 부모는 <td> 이며 <td>의 부모는 <tr>이다.
+            var td = tr.children();
+
+            // 삭제 버튼 클릭 시 해당 행의 값을 가져온다.
+            var id = td.eq(0).text();   // 값이 존재하는 대상이 테이블이므로 val()이 아닌 text()를 사용해야 한다.
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/v1/products/' + id,
+                contentType:'application/json; charset=utf-8'
+            }).done(function() {
+                alert('상품 삭제를 완료하였습니다.');
+                window.location.href = '/products/list';
+            }).fail(function(xhr, status, error) {
+                alert('상품 삭제에 실패했습니다.');
+            });
+        },
+        validate : function () {
+            /* Ajax 요청 */
+            if(!$('#code').val()) {
+                $('#code').focus();
+                alert('상품코드를 입력하세요.');
+                return false;
+            }
+
+            var data = {
+                code: $('#code').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/v1/products/validate-product-code',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                is_duplication_check = true;
+                alert('사용할 수 있는 상품코드입니다.');
+            }).fail(function(xhr, status, error) {
+                var responseJSON = JSON.parse(xhr.responseText);
+                alert(responseJSON.errors[0].reason);
+            });
+        }
+    };
+
+    main.init();
+</script>
