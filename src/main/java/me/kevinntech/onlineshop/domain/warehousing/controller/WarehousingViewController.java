@@ -1,7 +1,8 @@
-package me.kevinntech.onlineshop.domain.warehousing;
+package me.kevinntech.onlineshop.domain.warehousing.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.kevinntech.onlineshop.domain.product.dto.ProductDto;
+import me.kevinntech.onlineshop.domain.warehousing.service.WarehousingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
