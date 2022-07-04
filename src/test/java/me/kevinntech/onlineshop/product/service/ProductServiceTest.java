@@ -20,8 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 
 @DisplayName("비즈니스 로직 - 상품")
 @ExtendWith(MockitoExtension.class)
@@ -166,6 +165,52 @@ class ProductServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(ErrorCode.ENTITY_NOT_FOUND.getMessage());
         then(productRepository).should().findById(productId);
+    }
+
+    @DisplayName("[Service] 상품 삭제 - 성공")
+    @Test
+    void deleteProduct_success() {
+        // Given
+        long productId = 1L;
+        willDoNothing().given(productRepository).deleteById(productId);
+
+        // When
+        Long deletedProductId = productService.deleteProduct(productId);
+
+        // Then
+        assertThat(deletedProductId).isEqualTo(productId);
+        then(productRepository).should().deleteById(productId);
+    }
+
+    @DisplayName("[Service] 상품 삭제 - 실패 (상품 ID를 전달하지 않으면 상품 삭제를 중단하고 결과로 null를 리턴)")
+    @Test
+    void deleteProduct_fail1() {
+        // Given
+
+        // When
+        Long deletedProductId = productService.deleteProduct(null);
+
+        // Then
+        assertThat(deletedProductId).isNull();
+        then(productRepository).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("[Service] 상품 삭제 - 실패 (상품 삭제 중 데이터 오류가 발생하면 쇼핑몰 프로젝트의 기본 예외로 전환하여 예외를 던진다)")
+    @Test
+    void deleteProduct_fail2() {
+        // Given
+        long productId = 0L;
+        RuntimeException ex = new RuntimeException("Test Exception");
+        willThrow(ex).given(productRepository).deleteById(productId);
+
+        // When
+        Throwable thrown = catchThrowable(() -> productService.deleteProduct(productId));
+
+        // Then
+        assertThat(thrown)
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining(ErrorCode.DATA_ACCESS_ERROR.getMessage());
+        then(productRepository).should().deleteById(productId);
     }
 
     private Product buildProduct(String code, String name, String brand, Long price) {
