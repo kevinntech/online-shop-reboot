@@ -97,4 +97,11 @@ public class ProductService {
         productRepository.deleteById(productId);
         return productId;
     }
+
+    public List<ProductDto> getProductsInStock() {
+        return productRepository.findProductsInStock().stream()
+                .map(ProductDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 }

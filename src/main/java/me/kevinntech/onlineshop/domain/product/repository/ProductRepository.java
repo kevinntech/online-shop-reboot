@@ -15,4 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p order by p.id")
     List<Product> findProductsOrderById();
 
+    @Query("select p from Product p join p.stock s where s.quantity > 0 order by p.id")
+    List<Product> findProductsInStock();
+
 }

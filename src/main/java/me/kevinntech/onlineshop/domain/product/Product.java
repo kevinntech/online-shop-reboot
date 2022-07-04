@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.kevinntech.onlineshop.domain.product.dto.ProductDto;
+import me.kevinntech.onlineshop.domain.stock.Stock;
 
 import javax.persistence.*;
 
@@ -49,6 +50,14 @@ public class Product {
 
     @Lob @Basic(fetch = FetchType.EAGER)
     private String productImage;
+
+    @OneToOne(mappedBy = "product")
+    private Stock stock;
+
+    public void changeStock(Stock stock) {
+        this.stock = stock;
+        stock.changeProduct(this);
+    }
 
     @Builder
     public Product(String code, String name, String brand, long price, String description, String productImage) {
