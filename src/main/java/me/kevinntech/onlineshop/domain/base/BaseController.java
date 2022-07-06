@@ -16,7 +16,7 @@ public class BaseController {
     private final ProductService productService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String showsIndex(Model model) {
         List<ProductDto> products = productService.getProductsInStock();
         model.addAttribute("products", products);
 
