@@ -53,4 +53,18 @@ public class ProductViewController {
         return "products/edit";
     }
 
+    @GetMapping("/{productId}")
+    public String showsProduct(@PathVariable Long productId, Model model){
+        ProductDto productDto = productService.findProductById(productId)
+                .orElse(null);
+
+        if (productDto == null) {
+            model.addAttribute("error", "존재하지 않는 상품입니다.");
+            return "/";
+        }
+
+        model.addAttribute("product", productDto);
+        return "products/view";
+    }
+
 }
