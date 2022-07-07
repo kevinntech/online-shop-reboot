@@ -112,4 +112,27 @@ class ProductViewControllerTest {
                 .andExpect(model().attributeExists("error"));
     }
 
+    @DisplayName("[View][GET] 상품 단 건 조회 페이지")
+    @Test
+    void showsProduct() throws Exception {
+        // Given
+        Product product = Product.builder()
+                .code("NO-1")
+                .name("운동화")
+                .brand("브랜드")
+                .price(10000)
+                .description("설명입니다.")
+                .build();
+        productRepository.save(product);
+
+        // When & Then
+        mockMvc.perform(get("/products/" + product.getId())
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("products/view"))
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attributeExists("product"));
+    }
+
 }

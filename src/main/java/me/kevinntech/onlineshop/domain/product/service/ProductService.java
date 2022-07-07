@@ -36,6 +36,10 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public Optional<Product> findById(Long productId) {
+        return productRepository.findById(productId);
+    }
+
     public Optional<ProductDto> findProductById(Long productId) {
         if (productId == null) {
             return Optional.empty();
@@ -93,4 +97,11 @@ public class ProductService {
         productRepository.deleteById(productId);
         return productId;
     }
+
+    public List<ProductDto> getProductsInStock() {
+        return productRepository.findProductsInStock().stream()
+                .map(ProductDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 }
